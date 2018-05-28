@@ -30,21 +30,20 @@ NOTE: service is hardcoded to bind 8008 port( *it was designed to an available p
 
 Please find below for Restful API Request from Client
 
-Request From localmachine
+denote the `$IP` is the server IP address, `$N` is the number of the sequence.
 ```
-curl  localhost:8008/v1/fib?num=22
+curl  $IP:8008/v1/fib?num=$N
 ```
-
-From remote (denote the $IP is the server IP address)
+OR
 ```
-curl  $IP:8008/v1/fib?num=2222
+curl  $IP:8008/v1/fibonacci?num=$N
 ```
 
 the response data is in JSON format(an array), so you can use json tool to decode
 
 example
 ```
-curl  $IP:8008/v1/fib?num=4 | jq '.'
+curl  localhost:8008/v1/fib?num=4 | jq '.'
 ```
 the output is
 ```
