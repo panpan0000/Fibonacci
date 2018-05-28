@@ -12,10 +12,9 @@ notifications:
   email: false
 
 before_script:
-#  - go install ./vendor/github.com/golangci/golangci-lint/cmd/golangci-lint
+  - export GOPATH=`pwd`
 
 script:
-  - export GOPATH=`pwd`
   - go build -o fibonacci src/main.go
   - go test src/main.go src/main_test.go -v
   - go test src/fib/fib.go src/fib/fib_test.go -v
