@@ -142,10 +142,10 @@ kubectl apply -f  deploy/
 ## To Do
 It's kind of rush for this pilot project. There're some more things worthy as a production projects.
 examples:
-* Travis CI Auto Test for Pull Request or Post-Merge Test.
+* **Travis CI** Auto Test for Pull Request or Post-Merge Test and auto deployment( auto build docker images and pubish whenever new PR merged)
 * Config files de-coupling. (currently the 8008 port is hard-coded)
-* Kubernetes optimization , like QoS...
-* Heavy Workload:  the kubernetes deployment now is for a modest workload, but for very high loading at short period of time(although I don't think this Fibonacci will be so popular..), but if so, the DP(Dynamic Processing) can be moved to cloud cluster. In another word, the "cached" results will be persisted. The simplest way is to put it into database. but a memory based redis cluster will be a better solution though.
+* **Kubernetes optimization** , like QoS...
+* **Heavy Workload**:  the kubernetes deployment now is for a modest workload, but for very high loading at short period of time(although I don't think this Fibonacci will be so popular..), but if so, the DP(Dynamic Processing) can be moved to cloud cluster. In another word, the "cached" results will be persisted. The simplest way is to put it into database. but a memory based redis cluster will be a better solution though.
 * I'm newbie to Go-lang(just days), there're lots of optimization oppotunity in the code.( why I chose GO instead of javascript+Node ? I don't know....)
 
 
