@@ -7,8 +7,8 @@ import (
 	"net/url"
 	"os"
 	"io"
-    "encoding/json"
-    "fib"// import means the path of library code.instead of package name
+	"encoding/json"
+	"fib"// import means the path of library code.instead of package name
 )
 
 ///////////////////////
@@ -16,15 +16,15 @@ import (
 //////////////////////
 const(
 	BadRequestErrorCode      = 400
-    InternalServerErrorCode  = 500
+	InternalServerErrorCode  = 500
 )
 
 //////////////////////
 //  object to json
 //////////////////////
 func returnJson(value interface{}) string {
-    json, _ := json.Marshal(value)
-    return string(json)
+	json, _ := json.Marshal(value)
+	return string(json)
 }
 
 ////////////////////////
@@ -41,7 +41,7 @@ func badRequestResp( query_value int, w http.ResponseWriter, r *http.Request, er
 	w.WriteHeader( BadRequestErrorCode ); // 400 response code
 
 	query_form, _ := url.ParseQuery( r.URL.RawQuery );
-	
+
 	fmt.Fprintf(os.Stderr, "Bad Request: query_form = %s\n",query_form);
 	fmt.Fprintf(w, "invalid num value, should be unsigned number larger than 0.\n");
 
@@ -60,15 +60,15 @@ func badRequestResp( query_value int, w http.ResponseWriter, r *http.Request, er
 // return the request num value and error object
 //////////////////////////////////////////
 func getQueryParam( r *http.Request ) ( int, error ) {
-    // Retrieve the query by url.ParseQuery
+	// Retrieve the query by url.ParseQuery
 	query_form, _ := url.ParseQuery( r.URL.RawQuery )
 	cnt := -1;
 	query_key := "num";
 
 	// the query_form[query_key][0] should be the value like 123 in '?num=123'
-    if( len( query_form[query_key] )  > 0 ) {
+	if( len( query_form[query_key] )  > 0 ) {
 		query_value := query_form[query_key][0];
-        i, err := strconv.Atoi( query_value );
+		i, err := strconv.Atoi( query_value );
 		if( err == nil) {
 			cnt = i;
 		}else{
@@ -96,12 +96,12 @@ func getQueryParam( r *http.Request ) ( int, error ) {
 //        r: *http.Request
 //////////////////////////////////
 func GetFibonacci( w http.ResponseWriter, r *http.Request ){
-    // Retrieve the query by url.ParseQuery
+	// Retrieve the query by url.ParseQuery
 	// the query_form[query_key][0] should be the value like 123 in '?num=123'
-    cnt, err := getQueryParam( r );
+	cnt, err := getQueryParam( r );
 	if( err != nil ) {
-		    badRequestResp( cnt, w, r, err ); // not elegant enough...
-			return;
+		badRequestResp( cnt, w, r, err ); // not elegant enough...
+		return;
 	}
 
 	if( cnt < 0 ){
@@ -109,13 +109,13 @@ func GetFibonacci( w http.ResponseWriter, r *http.Request ){
 		badRequestResp( cnt, w, r, nil );
 		return;
 	} else{
-	    fmt.Println("valid user input, total num =",cnt);
+		fmt.Println("valid user input, total num =",cnt);
 		// valid input, call the fib.Fibonacci() and response
-        w.Header().Set("Content-Type", "application/json; charset=utf-8") // specific header: json reponse
+		w.Header().Set("Content-Type", "application/json; charset=utf-8") // specific header: json reponse
 		//fib_string := fib.Array2String( fib.Fibonacci( uint64(cnt) ) )
 		fib_slice := fib.Fibonacci( uint64(cnt))
 		io.WriteString(w, returnJson( fib_slice ) )
-   	 	//fmt.Fprintf(w, "%s\n",  fib_string );
+		//fmt.Fprintf(w, "%s\n",  fib_string );
 	}
 }
 
@@ -127,5 +127,5 @@ func main() {
 	http.HandleFunc( "/v1/fibonacci", GetFibonacci );
 	port:=":8008";
 	fmt.Println("Try to bind to port ", port);
-    log.Fatal( http.ListenAndServe(port, nil) );
+	log.Fatal( http.ListenAndServe(port, nil) );
 }

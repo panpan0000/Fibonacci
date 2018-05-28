@@ -1,8 +1,8 @@
 package main
 import (  
-    "testing"  
-    "net/http/httptest"  
-    "net/http"
+	"testing"
+	"net/http/httptest"
+	"net/http"
 	"specs"
 	"strconv"
 	//"fmt"
@@ -13,8 +13,8 @@ import (
 //
 //////////////////////////////
 type APITestCase struct{
-    input   string    // query string
-    expected []uint64 // expected body
+	input   string    // query string
+	expected []uint64 // expected body
 	httpCode int      // expected http code
 }
 
@@ -24,7 +24,7 @@ type APITestCase struct{
 //
 //////////////////////////////
 func generateCases( ) []APITestCase{
-    s := []APITestCase{
+	s := []APITestCase{
 		{ "num=-1"    , []uint64{}, 400 },
 		{ "num=-11111", []uint64{}, 400 },
 		{ "num=abc"   , []uint64{}, 400 },
@@ -47,7 +47,7 @@ func uint64ArrayToString( arr []uint64) string{
 	if( len(arr) == 0 ){
 		return "[]";
 	}
-    s:="[";
+	s:="[";
 	for _,e := range arr[:len(arr)-1] {
 		s += strconv.FormatUint( e, 10 ) + "," ;
 	}

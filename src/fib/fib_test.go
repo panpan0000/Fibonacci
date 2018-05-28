@@ -20,9 +20,9 @@ func TestFibnacci(t *testing.T) {
 		if(  reflect.DeepEqual( ret, testCase.Expected ) ){
 			t.Log("test case ", testCase.Input, " passed");
 		}else{
-		    t.Fatal("Test Failure. test Case Input", testCase.Input)
-		    t.Log("ret=",ret);
-		    t.Log("expect=", testCase.Expected)
+			t.Fatal("Test Failure. test Case Input", testCase.Input)
+			t.Log("ret=",ret);
+			t.Log("expect=", testCase.Expected)
 		}
 	}
 }
@@ -34,12 +34,12 @@ func TestFibnacci(t *testing.T) {
 // Usage: go test fib.go  fib_test.go -test.bench=".*"
 //////////////////////////
 func BenchmarkFibonacciRestAPI(b *testing.B) {
-    input:=100;
+	input:=100;
 	b.StopTimer();
-    b.StartTimer();
-    for i := 0; i < b.N; i++ {
+	b.StartTimer();
+	for i := 0; i < b.N; i++ {
 		Fibonacci( uint64(input) ) ;		
-    }
+	}
 
 }
 

@@ -1,15 +1,26 @@
 package fib
 import (
 	"fmt"
-    "strconv"
+	"strconv"
 )
+////////////////////////////////////
+//
+// Debugging Function
+//
+///////////////////////////////////
 func PrintArray( s []uint64 ){ 
-    for _,e := range s{
-        fmt.Print(e, "\t");  
-    }
+	for _,e := range s{
+		fmt.Print(e, "\t");  
+	}
 }
+////////////////////////////////
+//
+// Helper function(should not live here, should be in util/..)
+// whatever, it's not used.
+//
+///////////////////////////
 func Array2String( s[]uint64) string{
-    str:="";
+	str:="";
 	for _,e :=range s{
 		str += strconv.FormatUint(e,10) + " " ;
 	}
@@ -26,22 +37,20 @@ func Array2String( s[]uint64) string{
 //   the first n Fibonacci array.
 /////////////////////////////////////////////
 func Fibonacci( n uint64 ) []uint64 {
-    if( 0 == n ){
-	    return ( []uint64{} );
-    }
-    if( 1 == n ){
-	    return ( []uint64{ 0 } );
-    }
-	// cache is the staging array for DP(Dynamic Processing)
-	cache :=make( []uint64, n, n);
-	ret   :=make( []uint64, n, n);
-	cache[0] = 0;
-	cache[1] = 1;
-	copy( ret, cache ); // ret <- cache
-	for i:=uint64(2); i<n; i++ {
-        ret[i] = cache[i-1] + cache[i-2];
-		cache[i] = ret[i];
+	if( 0 == n ){
+		return ( []uint64{} );
 	}
-    return ret;
+	if( 1 == n ){
+		return ( []uint64{ 0 } );
+	}
+	// cache is the staging array for DP(Dynamic Processing)
+	ret   :=make( []uint64, n, n);
+	ret[0] = 0;
+	ret[1] = 1;
+	//copy( ret, cache ); // ret <- cache
+	for i:=uint64(2); i<n; i++ {
+		ret[i] = ret[i-1] + ret[i-2];
+	}
+	return ret;
 }
 

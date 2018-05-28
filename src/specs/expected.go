@@ -4,14 +4,15 @@ package specs
 //
 /////////////////
 type TestCase struct{
-    Input    uint64
-    Expected []uint64
+	Input    uint64
+	Expected []uint64
 }
 
 ///////////////////////
 //
 // Expected Results
 //
+// this list is generated from 3rd party online Fibonacci generation tool
 ///////////////////////
 var ShouldSuccess = []TestCase {
 	{ 0, []uint64{} },
