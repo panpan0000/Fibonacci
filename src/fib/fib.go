@@ -13,19 +13,7 @@ func PrintArray( s []uint64 ){
 		fmt.Print(e, "\t");  
 	}
 }
-////////////////////////////////
-//
-// Helper function(should not live here, should be in util/..)
-// whatever, it's not used.
-//
-///////////////////////////
-func Array2String( s[]uint64) string{
-	str:="";
-	for _,e :=range s{
-		str += strconv.FormatUint(e,10) + " " ;
-	}
-	return str;
-}
+
 /////////////////////////////////////////////
 // Func:
 //   Fibonacci: F(n)=F(n-1)+F(n-2) (n>=2)
@@ -43,14 +31,25 @@ func Fibonacci( n uint64 ) []uint64 {
 	if( 1 == n ){
 		return ( []uint64{ 0 } );
 	}
-	// cache is the staging array for DP(Dynamic Processing)
+	// staging array for DP(Dynamic Processing)
 	ret   :=make( []uint64, n, n);
 	ret[0] = 0;
 	ret[1] = 1;
-	//copy( ret, cache ); // ret <- cache
 	for i:=uint64(2); i<n; i++ {
 		ret[i] = ret[i-1] + ret[i-2];
 	}
 	return ret;
 }
-
+////////////////////////////////
+//
+// Helper function(should not live here, should be in util/..)
+// whatever, it's not used.
+//
+///////////////////////////
+func Array2String( s[]uint64) string{
+	str:="";
+	for _,e :=range s{
+		str += strconv.FormatUint(e,10) + " " ;
+	}
+	return str;
+}

@@ -31,22 +31,22 @@ func returnJson(value interface{}) string {
 // error handler
 //
 // Param
-// query_value: the interpreted value
+// queryValue: the interpreted value
 // w: http reponse
 // r: http request
 // err: the error message passing from upstream query processing routine
 ///////////////////////
-func badRequestResp( query_value int, w http.ResponseWriter, r *http.Request, err error ){
+func badRequestResp( queryValue int, w http.ResponseWriter, r *http.Request, err error ){
 
 	w.WriteHeader( BadRequestErrorCode ); // 400 response code
 
-	query_form, _ := url.ParseQuery( r.URL.RawQuery );
+	queryForm, _ := url.ParseQuery( r.URL.RawQuery );
 
-	fmt.Fprintf(os.Stderr, "Bad Request: query_form = %s\n",query_form);
+	fmt.Fprintf(os.Stderr, "Bad Request: queryForm = %s\n",queryForm);
 	fmt.Fprintf(w, "invalid num value, should be unsigned number larger than 0.\n");
 
 	if( err == nil ){
-		fmt.Fprintf(w, "but input was %d\n" , query_value);
+		fmt.Fprintf(w, "but input was %d\n" , queryValue);
 	}else{
 		fmt.Fprintf(w, "input failure, error%s\n", err);
 	}
@@ -61,14 +61,14 @@ func badRequestResp( query_value int, w http.ResponseWriter, r *http.Request, er
 //////////////////////////////////////////
 func getQueryParam( r *http.Request ) ( int, error ) {
 	// Retrieve the query by url.ParseQuery
-	query_form, _ := url.ParseQuery( r.URL.RawQuery )
+	queryForm, _ := url.ParseQuery( r.URL.RawQuery )
 	cnt := -1;
 	query_key := "num";
 
-	// the query_form[query_key][0] should be the value like 123 in '?num=123'
-	if( len( query_form[query_key] )  > 0 ) {
-		query_value := query_form[query_key][0];
-		i, err := strconv.Atoi( query_value );
+	// the queryForm[query_key][0] should be the value like 123 in '?num=123'
+	if( len( queryForm[query_key] )  > 0 ) {
+		queryValue := queryForm[query_key][0];
+		i, err := strconv.Atoi( queryValue );
 		if( err == nil) {
 			cnt = i;
 		}else{
@@ -97,7 +97,7 @@ func getQueryParam( r *http.Request ) ( int, error ) {
 //////////////////////////////////
 func GetFibonacci( w http.ResponseWriter, r *http.Request ){
 	// Retrieve the query by url.ParseQuery
-	// the query_form[query_key][0] should be the value like 123 in '?num=123'
+	// the queryForm[query_key][0] should be the value like 123 in '?num=123'
 	cnt, err := getQueryParam( r );
 	if( err != nil ) {
 		badRequestResp( cnt, w, r, err ); // not elegant enough...
@@ -115,7 +115,6 @@ func GetFibonacci( w http.ResponseWriter, r *http.Request ){
 		//fib_string := fib.Array2String( fib.Fibonacci( uint64(cnt) ) )
 		fib_slice := fib.Fibonacci( uint64(cnt))
 		io.WriteString(w, returnJson( fib_slice ) )
-		//fmt.Fprintf(w, "%s\n",  fib_string );
 	}
 }
 

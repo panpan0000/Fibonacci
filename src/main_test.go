@@ -67,7 +67,7 @@ func TestFibonacciRestAPI(t *testing.T) {
 	// walk thru all test cases
 	for _, c := range cases {
 		// create a new request
-		req, err := http.NewRequest("GET", "/v1/fib?"+c.input, nil);
+		req, err := http.NewRequest("GET", "/v1/fibonacci?"+c.input, nil);
 		if err != nil {
 			t.Fatal(err);
 		}
