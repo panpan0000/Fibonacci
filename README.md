@@ -4,7 +4,7 @@
 * [Build & Run from src](README.md#buildrun-from-source-code)
 * [Tests](README.md#tests)
 * [Docker & Kubernetes ](README.md#containerkubernetes-deployment)
-* [Next Steps](README.md#to-do)
+* [Next Steps(like extreme large N)](README.md#to-do)
 
 
 
@@ -147,7 +147,7 @@ kubectl apply -f  deploy/
 It's kind of rush for this pilot project. There're some more things worthy as a production projects.
 examples:
 
-* **Extremely Large N**: if the N is extremely large:
+* **Extreme Large N**: if the N is extremely large:
    * if the output array is tooooo long, the http I/O will suffer from **timeout** (even server process crash as below). **Pagination** could be a solution for this case. adding `?page=$i` in the restful API, and limit the each "page" to a reasonable size of array.  
    * if this kind of request is so frequent, the duplication of caculation will waste a lot of CPU time. Similar as above, leveraging a **persistent** database is the way out.  
    * if it exceeds uint64 boundary, it would require different algorithm to do the caculation...
