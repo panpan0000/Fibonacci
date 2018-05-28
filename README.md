@@ -1,5 +1,5 @@
 * [What it is ](README.md#what-it-is)
-* [API Usage ](README.md#api-usage)
+* [Usage ](README.md#usage)
 * [Source Code Walk Through](README.md#source-code-walk-through)
 * [Build & Run from src](README.md#buildrun-from-source-code)
 * [Tests](README.md#tests)
@@ -15,13 +15,17 @@ It's written in Go-lang, with unit-test.
 the docker file and kubernetes deployment(with HPA) is also provided.
 
 
-# API Usage
+# Usage
 
-#### start server
-1. Please start the server first(either [running from source code]((README.md#buildrun-from-source-code)) or [running from docker](README.md#docker-run), refer to below sessions for more details)
-NOTE: it's hardcoded in 8008 port( *it was designed to an available port, but it takes complexity to client side.. *)
+#### 1. start server
+Please start the server first
+either 
+* [running from source code](README.md#buildrun-from-source-code) or 
+* [running from docker](README.md#docker-run), refer to below sessions for more details)
 
-#### curl the API
+NOTE: service is hardcoded to bind 8008 port( *it was designed to an available port, but it takes complexity to client side.. *)
+
+#### 2.curl the API
 2. if the server starts well, do below( assuming you have curl installed)
 
 Please find below for Restful API Request from Client
@@ -63,7 +67,7 @@ the output is
 	* specs/
 		* expected.go : a common header file for testing, listing the expected fibonacci sequences 
 	* fib/
-		* fib.go : Fibonacci caculator with DP algorithm (not recursive)
+		* fib.go : Fibonacci caculator (not recursive)
 		* fib_test.go : unit-test of the fib.go
 	* deploy/
 		* fibnacci-deployment.yaml:  the deployment with 4 replica set
@@ -145,7 +149,7 @@ examples:
 * **Travis CI** Auto Test for Pull Request or Post-Merge Test and auto deployment( auto build docker images and pubish whenever new PR merged)
 * Config files de-coupling. (currently the 8008 port is hard-coded)
 * **Kubernetes optimization** , like QoS...
-* **Heavy Workload**:  the kubernetes deployment now is for a modest workload, but for very high loading at short period of time(although I don't think this Fibonacci will be so popular..), but if so, the DP(Dynamic Processing) can be moved to cloud cluster. In another word, the "cached" results will be persisted. The simplest way is to put it into database. but a memory based redis cluster will be a better solution though.
+* **Heavy Workload**:  the kubernetes deployment now is for a modest workload, but for very high loading at short period of time(although I don't think this Fibonacci will be so popular..), but if so, the DP(Dynamic Processing) can be moved to distributed cloud cluster. In another word, the "cached" previous caculation results will be persisted. The simplest way is to put it into database. but a memory based KV cluster like redis will be a better solution though.
 * I'm newbie to Go-lang(just days), there're lots of optimization oppotunity in the code.( why I chose GO instead of javascript+Node ? I don't know....)
 
 
