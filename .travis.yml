@@ -11,8 +11,9 @@ go:
 notifications:
   email: false
 
-before_install:
+install:
   - export GOPATH=`pwd`
+  - cd src && go install && cd -
 
 script:
   - go build -o fibonacci src/main.go
