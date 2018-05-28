@@ -12,6 +12,7 @@ notifications:
   email: false
 
 install:
+  - export GOBIN=$GOPATH/bin
   - export GOPATH=`pwd`
   - cd src && go install && cd -
 
