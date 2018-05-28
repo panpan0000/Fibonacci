@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fibonacci 
+spec:
+  selector:
+    matchLabels:
+      app: fibonacci
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: fibonacci
+    spec:
+      containers:
+      - name: fibonacci
+        image: panpan0000/fibonacci
+        ports:
+        - containerPort: 8008
+
