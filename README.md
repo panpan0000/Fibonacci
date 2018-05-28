@@ -148,14 +148,24 @@ It's kind of rush for this pilot project. There're some more things worthy as a 
 examples:
 
 * **Extreme Large N**: if the N is extremely large:
-   * if the output array is tooooo long, the http I/O will suffer from **timeout** (even server process crash as below). **Pagination** could be a solution for this case. adding `?page=$i` in the restful API, and limit the each "page" to a reasonable size of array.  
-   * if this kind of request is so frequent, the duplication of caculation will waste a lot of CPU time. Similar as above, leveraging a **persistent** database is the way out.  
+   * if the output array is tooooo long, the http I/O will suffer from **timeout** (even server process crash as below). **Pagination** for the reponse could be a solution for this case. adding `?page=$i` in the restful API, and limit the each "page" in response body to a reasonable size of array.
+   * if this kind of large N request is so frequent, the duplication of caculation will waste a lot of CPU time. Leveraging a **persistent** database is the way out. Using a DB or even a local file, to saving the previous result ever.
    * if it exceeds uint64 boundary, it would require different algorithm to do the caculation...
+   
 * Config files de-coupling. (currently the 8008 port is hard-coded)
+
 * **Kubernetes optimization** , like QoS...
+
 * **Heavy Workload**:  the kubernetes deployment now is for a modest workload, but for very high loading at short period of time(although I don't think this Fibonacci will be so popular..), but if so, the DP(Dynamic Processing) can be moved to distributed cloud cluster. In another word, the "cached" previous caculation results will be persisted. The simplest way is to put it into database. but a memory based KV cluster like redis will be a better solution though.
    
 * I'm newbie to Go-lang(just days), there're lots of optimization oppotunity in the code.( why I chose GO instead of javascript+Node ? I don't know....)
+
+
+
+
+
+
+
 
 
 
