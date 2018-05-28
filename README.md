@@ -72,7 +72,8 @@ the output is
 		* fibnacci-deployment.yaml:  the deployment with 4 replica set
         * fibonacci-service.yaml:    the service using NodePort as a simple example
         * fibonacci-hpa.yaml :       HPA scale out when heavy loading encounted and at most 10 replicas
-
+    * Dockerfile: build the docker images
+    * .travis.yaml : the Travis CI config file. for each PR/commit, it will do the automation test/deploy.(deploy is not included so far)
 
 # Build/Run from Source Code
 
@@ -145,10 +146,10 @@ kubectl apply -f  deploy/
 ## To Do
 It's kind of rush for this pilot project. There're some more things worthy as a production projects.
 examples:
-* **Travis CI** Auto Test for Pull Request or Post-Merge Test and auto deployment( auto build docker images and pubish whenever new PR merged)
 * Config files de-coupling. (currently the 8008 port is hard-coded)
 * **Kubernetes optimization** , like QoS...
 * **Heavy Workload**:  the kubernetes deployment now is for a modest workload, but for very high loading at short period of time(although I don't think this Fibonacci will be so popular..), but if so, the DP(Dynamic Processing) can be moved to distributed cloud cluster. In another word, the "cached" previous caculation results will be persisted. The simplest way is to put it into database. but a memory based KV cluster like redis will be a better solution though.
+* **Large N**: if the N is extremelly large, which exceeds uint64 boundary, it would require different algorithm to do the caculation...
 * I'm newbie to Go-lang(just days), there're lots of optimization oppotunity in the code.( why I chose GO instead of javascript+Node ? I don't know....)
 
 
