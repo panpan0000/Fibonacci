@@ -146,11 +146,40 @@ kubectl apply -f  deploy/
 ## To Do
 It's kind of rush for this pilot project. There're some more things worthy as a production projects.
 examples:
+
+* **Extremely Large N**: if the N is extremely large:
+   * if the output array is tooooo long, the http I/O will suffer from **timeout** (even server process crash as below). **Pagination** could be a solution for this case. adding `?page=$i` in the restful API, and limit the each "page" to a reasonable size of array.  
+   * if this kind of request is so frequent, the duplication of caculation will waste a lot of CPU time. Similar as above, leveraging a **persistent** database is the way out.  
+   * if it exceeds uint64 boundary, it would require different algorithm to do the caculation...
 * Config files de-coupling. (currently the 8008 port is hard-coded)
 * **Kubernetes optimization** , like QoS...
 * **Heavy Workload**:  the kubernetes deployment now is for a modest workload, but for very high loading at short period of time(although I don't think this Fibonacci will be so popular..), but if so, the DP(Dynamic Processing) can be moved to distributed cloud cluster. In another word, the "cached" previous caculation results will be persisted. The simplest way is to put it into database. but a memory based KV cluster like redis will be a better solution though.
-* **Large N**: if the N is extremelly large, which exceeds uint64 boundary, it would require different algorithm to do the caculation...
+   
 * I'm newbie to Go-lang(just days), there're lots of optimization oppotunity in the code.( why I chose GO instead of javascript+Node ? I don't know....)
 
 
 
+-----------
+
+
+
+example of server crash for tooo long http I/O due to very large N(100000000)
+```
+goroutine 51 [IO wait, 1 minutes]:
+internal/poll.runtime_pollWait(0x7fb29832ee30, 0x72, 0xc420037e58)
+        /home/rackhd/go/src/runtime/netpoll.go:173 +0x57
+internal/poll.(*pollDesc).wait(0xc420450098, 0x72, 0xffffffffffffff00, 0x6e53c0, 0x7f1520)
+        /home/rackhd/go/src/internal/poll/fd_poll_runtime.go:85 +0x9b
+internal/poll.(*pollDesc).waitRead(0xc420450098, 0xc42008af00, 0x1, 0x1)
+        /home/rackhd/go/src/internal/poll/fd_poll_runtime.go:90 +0x3d
+internal/poll.(*FD).Read(0xc420450080, 0xc42008af41, 0x1, 0x1, 0x0, 0x0, 0x0)
+        /home/rackhd/go/src/internal/poll/fd_unix.go:157 +0x17d
+net.(*netFD).Read(0xc420450080, 0xc42008af41, 0x1, 0x1, 0x0, 0x0, 0x0)
+        /home/rackhd/go/src/net/fd_unix.go:202 +0x4f
+net.(*conn).Read(0xc42000e028, 0xc42008af41, 0x1, 0x1, 0x0, 0x0, 0x0)
+        /home/rackhd/go/src/net/net.go:176 +0x6a
+net/http.(*connReader).backgroundRead(0xc42008af30)
+        /home/rackhd/go/src/net/http/server.go:668 +0x5a
+created by net/http.(*connReader).startBackgroundRead
+        /home/rackhd/go/src/net/http/server.go:664 +0xce
+```
