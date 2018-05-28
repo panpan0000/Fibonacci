@@ -1,3 +1,13 @@
+* [What it is ](README.md#what-it-is)
+* [API Usage ](README.md#api-usage)
+* [Source Code Walk Through](README.md#source-code-walk-through)
+* [Build & Run from src](README.md#buildrun-from-source-code)
+* [Tests](README.md#tests)
+* [Docker & Kubernetes ](README.md#containerkubernetes-deployment)
+* [Next Steps](README.md#to-do)
+
+
+
 # What it is 
 This is a repo to provide a Restful web service, to dump the N Fibonacci numbers sequence(json), the `N` is given via the GET operation of the restful API.
 
@@ -8,7 +18,7 @@ the docker file and kubernetes deployment(with HPA) is also provided.
 # API Usage
 
 #### start server
-1. Please start the server first(either running from source code or running from docker, refer to below sessions for more details)
+1. Please start the server first(either [running from source code]((README.md#buildrun-from-source-code)) or [running from docker](README.md#docker-run), refer to below sessions for more details)
 NOTE: it's hardcoded in 8008 port( *it was designed to an available port, but it takes complexity to client side.. *)
 
 #### curl the API
@@ -96,13 +106,14 @@ go test fib.go  fib_test.go -test.bench=".*"
 ```
 
 
-# Container/Kubernetest Deployment
+# Container/Kubernetes Deployment
 
 ### Docker build/run
 
+The docker images is push to public docker hub `panpan0000/fibonacci`
 
 ##### docker BUILD:
-and saving as image tag `fibonacci`
+if you want to re-build by yourself, do below and it will be saved as image tag `fibonacci`
 ```
 docker build ./ -t fibonacci
 ```
@@ -110,7 +121,8 @@ docker build ./ -t fibonacci
 ##### docker RUN:
 run the images and bind the 8008 host port with 8008 port inside container 
 ```
-docker run -d --rm --name Fibonacci -p 8008:8008 fibonacci
+docker pull panpan0000/fibonacci
+docker run -d --rm --name Fibonacci -p 8008:8008 panpan0000/fibonacci
 ```
 
 ### Kubernetes Deployment
@@ -128,3 +140,13 @@ kubectl apply -f  deploy/
 
 
 ## To Do
+It's kind of rush for this pilot project. There're some more things worthy as a production projects.
+examples:
+* Travis CI Auto Test for Pull Request or Post-Merge Test.
+* Config files de-coupling. (currently the 8008 port is hard-coded)
+* Kubernetes optimization , like QoS...
+* Heavy Workload:  the kubernetes deployment now is for a modest workload, but for very high loading at short period of time(although I don't think this Fibonacci will be so popular..), but if so, the DP(Dynamic Processing) can be moved to cloud cluster. In another word, the "cached" results will be persisted. The simplest way is to put it into database. but a memory based redis cluster will be a better solution though.
+* I'm newbie to Go-lang(just days), there're lots of optimization oppotunity in the code.( why I chose GO instead of javascript+Node ? I don't know....)
+
+
+
