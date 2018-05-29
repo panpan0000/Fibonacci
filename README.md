@@ -85,7 +85,7 @@ export GOPATH=`pwd`
 mkdir -p $GOPATH/bin
 export GOBIN=$GOPATH/bin
 go install webservice
-webservice
+$GOPATH/bin/webservice
 ```
 NOTE: if `8008` port is occupied. it will complain
 ```
@@ -161,6 +161,7 @@ examples:
 * **Heavy Workload**:  the kubernetes deployment now is for a modest workload, but for very high loading at short period of time(although I don't think this Fibonacci will be so popular..), but if so, the DP(Dynamic Processing) can be moved to distributed cloud cluster. In another word, the "cached" previous caculation results will be persisted. The simplest way is to put it into database. but a memory based KV cluster like redis will be a better solution though.
    
 * I'm newbie to Go-lang(just days), there're lots of optimization oppotunity in the code.( why I chose GO instead of javascript+Node ? I don't know....)
+
 
 
 
