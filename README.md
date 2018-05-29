@@ -61,14 +61,15 @@ the output is
 
 # Source Code Walk Through
 * src/
-	* main.go : the http entrance point
-	* main_test.go : the unit-test/function-test for http API
-	* specs/
-		* expected.go : a common header file for testing, listing the expected fibonacci sequences 
-	* fib/
+    * webservice/  : RestAPI provider
+    	* webservice.go : the http entrance point
+    	* webservice_test.go : the unit-test/function-test for http API
+	* fib/  :  Fibonacci caculator
 		* fib.go : Fibonacci caculator (not recursive)
 		* fib_test.go : unit-test of the fib.go
-	* deploy/
+	* specs/   : test cases
+		* expected.go : a common header file for testing, listing the expected fibonacci sequences 
+	* deploy/  :  it's the Kubernetes deployment config files
 		* fibnacci-deployment.yaml:  the deployment with 4 replica set
         * fibonacci-service.yaml:    the service using NodePort as a simple example
         * fibonacci-hpa.yaml :       HPA scale out when heavy loading encounted and at most 10 replicas
@@ -81,8 +82,10 @@ Prerequist : Go-Lang installed and $GOROOT Path setup (refer to Go-lang offical 
 
 ```
 export GOPATH=`pwd`
-go build -o fibonacci src/main.go
-./fibonacci
+mkdir -p $GOPATH/bin
+export GOBIN=$GOPATH/bin
+go install webservice
+webservice
 ```
 NOTE: if `8008` port is occupied. it will complain
 ```
@@ -95,18 +98,17 @@ NOTE: if `8008` port is occupied. it will complain
 ### Restful API Server Test:
 
 ```
-go test src/main.go src/main_test.go
+go test webservice -v
 ```
 
 ### Test the sub-routine of fibonacci()
 ```
-cd src/fib
 
 # Unit Test
-go test fib.go  fib_test.go  -v
+go test fib  -v
 
 # Bench Mark Test
-go test fib.go  fib_test.go -test.bench=".*"
+go test fib -test.bench=".*"
 ```
 
 

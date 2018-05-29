@@ -12,14 +12,14 @@ notifications:
   email: false
 
 install:
-  - export GOBIN=$GOPATH/bin
   - export GOPATH=`pwd`
-  - cd src && go install && cd -
+  - export GOBIN=$GOPATH/bin
+  - mkdir -p $GOBIN
 
 script:
-  - go build -o fibonacci src/main.go
-  - go test src/main.go src/main_test.go -v
-  - go test src/fib/fib.go src/fib/fib_test.go -v
-  - go test src/fib/fib.go src/fib/fib_test.go -test.bench=".*"
+  - go build -o fibonacci webservice
+  - go test webservice -v
+  - go test fib -v
+  - go test fib -test.bench=".*"
 
 deploy:
