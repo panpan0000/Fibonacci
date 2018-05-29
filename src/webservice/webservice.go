@@ -20,37 +20,59 @@ const(
 )
 
 //////////////////////
+//
+// Rest Error Definition
+//
+/////////////////////
+type RestError struct{
+    HttpErrorCode     int
+	InternalErrorCode int
+    ErrorMessage      string
+	MoreInfo          string
+}
+
+//////////////////////
 //  object to json
 //////////////////////
 func returnJson(value interface{}) string {
-	json, _ := json.Marshal(value)
+	json, err := json.Marshal(value)
+	if( err != nil){
+		return ""
+	}
 	return string(json)
 }
 
-////////////////////////
-// error handler
+///////////////////////////////////////////////////////////////
+// error handler; response the http body with error details
 //
 // Param
 // queryValue: the interpreted value
 // w: http reponse
 // r: http request
 // err: the error message passing from upstream query processing routine
-///////////////////////
-func badRequestResp( queryValue int, w http.ResponseWriter, r *http.Request, err error ){
+////////////////////////////////////////////////////////////////
+func badRequestResp( queryValue int, w http.ResponseWriter, r *http.Request, passingError error ){
 
-	w.WriteHeader( BadRequestErrorCode ); // 400 response code
+    var err RestError;
+
+	err.HttpErrorCode = BadRequestErrorCode;// 400 response code: Client Bad Request Error
+	w.WriteHeader( err.HttpErrorCode );
 
 	queryForm, _ := url.ParseQuery( r.URL.RawQuery );
-
 	fmt.Fprintf(os.Stderr, "Bad Request: queryForm = %s\n",queryForm);
-	fmt.Fprintf(w, "invalid num value, should be unsigned number larger than 0.\n");
 
-	if( err == nil ){
-		fmt.Fprintf(w, "but input was %d\n" , queryValue);
+    err.ErrorMessage = "invalid num value, should be unsigned number larger than 0. "
+
+	if( passingError == nil ){
+        err.InternalErrorCode = 1001; // customized error code. should be in const...
+		err.ErrorMessage += fmt.Sprintln( "but input was " , queryValue );
 	}else{
-		fmt.Fprintf(w, "input failure, error%s\n", err);
+        err.InternalErrorCode = 1002;
+		err.ErrorMessage += fmt.Sprintln( "input failure, error =", passingError );
 	}
-	fmt.Fprintf(w, "Usage: $IP:$port/v1/fibonacci?num=33\n");
+    err.MoreInfo = "Usage: $IP:$port/v1/fibonacci?num=33 "
+
+	io.WriteString(w, returnJson( err ) )
 }
 
 ////////////////////////////////////////////
